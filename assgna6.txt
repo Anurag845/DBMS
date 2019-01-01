@@ -1,0 +1,78 @@
+Cursors: (All types: Implicit, Explicit, Cursor FOR
+Loop, Parameterized Cursor)
+
+Write a PL/SQL block of code using parameterized Cursor,
+that will merge the data available in the newly created table
+N_EmpId with the data available in the table O_EmpId.
+If the data in the first table already exist in the second table
+then that data should be skipped.
+
+create table Employee(emp_id integer,project varchar(10),status varchar(15),Sdate date);
+
+create table incentive_list(emp_id integer primary key,project varchar(10));
+
+create table pending_list(emp_id integer primary key,project varchar(10));
+
+insert into Employee values(1,'abc','completed','24-jul-2018');
+insert into Employee values(2,'xyz','pending','11-jun-2018');
+insert into Employee values(3,'pqr','pending','30-aug-2018');
+insert into Employee values(4,'mno','completed','10-may-2018');
+insert into Employee values(5,'abc','pending','16-jun-2018');
+
+DECLARE
+	cursor cur(eid integer) is select project,status from Employee where emp_id = eid;
+	empid integer;
+	pr varchar(10);
+	st varchar(15);
+BEGIN
+	empid := &id;
+	open cur(empid);
+	fetch cur into pr,st;
+	if st = 'completed' then
+		insert into incentive_list values(empid,pr);
+	end if;
+	if cur%NOTFOUND then
+		dbms_output.put_line('No such employee!');
+	end if;
+	close cur;
+END;
+/
+
+
+DECLARE
+	CURSOR cur is select * from Employee where status = 'pending';
+	emprecord Employee%RowType;
+BEGIN
+	for emprecord in cur 
+	LOOP
+		insert into pending_list values(emprecord.emp_id,emprecord.project);
+		delete from Employee where Employee.emp_id = emprecord.emp_id;
+	END LOOP;
+END;
+/
+
+SQL> select * from Employee;
+
+    EMP_ID PROJECT    STATUS	      SDATE
+---------- ---------- --------------- --------
+	 1 abc	      completed       24-07-18
+	 2 xyz	      pending	      11-06-18
+	 3 pqr	      pending	      30-08-18
+	 4 mno	      completed       10-05-18
+	 5 abc	      pending	      16-06-18
+	 
+SQL> select * from incentive_list;
+
+    EMP_ID PROJECT
+---------- ----------
+	 4 mno
+
+
+SQL> select * from pending_list;
+
+    EMP_ID PROJECT
+---------- ----------
+	 2 xyz
+	 3 pqr
+	 5 abc
+

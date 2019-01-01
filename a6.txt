@@ -1,0 +1,42 @@
+create table Employee(emp_id integer,project varchar(10),status varchar(15),Sdate date);
+
+create table incentive_list(emp_id integer primary key,project varchar(10));
+
+create table pending_list(emp_id integer primary key,project varchar(10));
+
+insert into Employee values(1,'abc','pending','10-oct-2018');
+insert into Employee values(2,'xyz','completed','5-sep-2018');
+insert into Employee values(3,'mno','pending','26-jun-2018');
+insert into Employee values(4,'pqr','completed','29-aug-2018');
+insert into Employee values(5,'abc','pending','25-jul-2018');
+
+DECLARE
+	CURSOR cur(empid integer) is select project,status from Employee where emp_id = empid;
+	pr varchar(20);
+	st varchar(20);
+	empid integer;
+BEGIN
+	empid := &id;
+	open cur(empid);
+	fetch cur into pr,st;
+	if(st = 'pending') then
+		insert into pending_list values(empid,pr);
+	end if;
+	if cur%NOTFOUND then
+		dbms_output.put_line('Employee does not exist');
+	end if;
+	close cur();
+END;
+
+DECLARE
+	CURSOR cur is select * from Employee;
+	crecord Employee%ROWTYPE;
+BEGIN
+	FOR crecord in cur
+	LOOP
+		if(crecord.status = 'completed') then
+			insert into incentive_list values(crecord.emp_id,crecord.project);
+		end if;
+	END LOOP;
+END;
+	

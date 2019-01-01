@@ -1,0 +1,2258 @@
+mysql> select * from customers;
++---------+------------+-------------+------------------+---------------+-----------+------------+
+| cust_no | cust_fname | cust_lname  | cust_company     | cust_addr     | city      | cust_phone |
++---------+------------+-------------+------------------+---------------+-----------+------------+
+|       1 | Avani      | Vaidya      | Sungard          | Sahakar Nagar | Pune      | 9850718202 |
+|       2 | Anurag     | Gujarathi   | Oracle           | Sinhgad Road  | Pune      | 9422324985 |
+|       3 | Aditya     | Bendre      | Symantec         | Perugate      | Pune      | 7418529632 |
+|       4 | Apoorva    | Karambelkar | KPMG             | Sahakar Nagar | Mumbai    | 7418529634 |
+|       5 | Mukta      | Vaidya      | LnTInfotech      | Vashi         | Mumbai    | 9638527414 |
+|       6 | Rucha      | Nachnolkar  | Sun Microsystems | Bannerghatta  | Bangalore | 9875641256 |
+|       7 | Shreya     | Mehta       | Infosys          | Connought     | Delhi    | 8526439742 |
+|       8 | Poorva     | Kajale      | Icertis          | Ganesh Khind  | Pune      | 8562347915 |
+|       9 | Pallavi    | Joshi       | Barclays         | Kothrud       | Pune      | 9876325418 |
+|      10 | Shalmalee  | Shenolikar  | Delloite         | Deccan        | Mysore      | 8569741352 |
++---------+------------+-------------+------------------+---------------+-----------+------------+
+10 rows in set (0.00 sec)
+
+
+mysql> select * from book;
++------+----------------------+------------+----------+-----------+--------------+
+| ISBN | title                | unit_price | pub_year | author_no | publisher_no |
++------+----------------------+------------+----------+-----------+--------------+
+| 1234 | Paths of Glory       |        550 | 2008     |         1 |            3 |
+| 7415 | Last Man Standing    |        600 | 2017     |         3 |            5 |
+| 8521 | The Tristan Betrayal |        368 | 2015     |         2 |            4 |
+| 9517 | Famous Five          |        230 | 2000     |         6 |            4 |
+| 9632 | The Alchemist        |        400 | 2014     |         5 |            2 |
+| 9634 | GooseBumps           |        400 | 2006     |         4 |            1 |
++------+----------------------+------------+----------+-----------+--------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from author;
++-----------+----------------+-----------+
+| author_no | author_name    | country   |
++-----------+----------------+-----------+
+|         1 | Jeffrey Archer | England   |
+|         2 | John Grisham   | USA       |
+|         3 | David Baldacci | USA       |
+|         4 | RL Stine       | England   |
+|         5 | Paulo Coelho   | Argentina |
+|         6 | Enid Blyton    | England   |
++-----------+----------------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from publisher;
++--------------+----------------+----------------+------+
+| publisher_no | publisher_name | publisher_addr | year |
++--------------+----------------+----------------+------+
+|            1 | Macgraw Hill   | England        | 2014 |
+|            2 | Penguin Books  | USA            | 2016 |
+|            3 | Harper Collins | USA            | 2010 |
+|            4 | Orion          | USA            | 2017 |
+|            5 | Pan            | USA            | 2015 |
++--------------+----------------+----------------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from orders;
++----------+---------+------+------+------------+
+| order_no | cust_no | ISBN | qty  | odate      |
++----------+---------+------+------+------------+
+|        1 |       2 | 8521 |    2 | 2018-05-15 |
+|        2 |       5 | 9632 |    3 | 2018-08-05 |
+|        3 |       7 | 1234 |    3 | 2018-07-04 |
+|        4 |       4 | 7415 |    1 | 2018-09-28 |
+|        5 |       1 | 1234 |    2 | 2018-10-13 |
+|        6 |       5 | 9517 |    4 | 2018-06-07 |
+|        7 |       8 | 7415 |    2 | 2018-05-15 |
+|        8 |       9 | 9634 |    5 | 2018-08-06 |
+|        9 |       1 | 1234 |    1 | 2018-09-08 |
++----------+---------+------+------+------------+
+9 rows in set (0.00 sec)
+
+mysql> select * from publisher;
++--------------+----------------+----------------+------+
+| publisher_no | publisher_name | publisher_addr | year |
++--------------+----------------+----------------+------+
+|            1 | Macgraw Hill   | England        | 2014 |
+|            2 | Penguin Books  | USA            | 2016 |
+|            3 | Harper Collins | USA            | 2010 |
+|            4 | Orion          | USA            | 2017 |
+|            5 | Pan            | USA            | 2015 |
++--------------+----------------+----------------+------+
+5 rows in set (0.00 sec)
+
+
+1) Display details of customers who stay in Pune or Mumbai and whose first name starts with 'p' or 'h'.
+
+mysql> select * from customers where ((city in ('Pune','Mumbai')) and (cust_fname like 'p%' or cust_fname like 'h%'));
++---------+------------+------------+--------------+--------------+------+------------+
+| cust_no | cust_fname | cust_lname | cust_company | cust_addr    | city | cust_phone |
++---------+------------+------------+--------------+--------------+------+------------+
+|       8 | Poorva     | Kajale     | Icertis      | Ganesh Khind | Pune | 8562347915 |
+|       9 | Pallavi    | Joshi      | Barclays     | Kothrud      | Pune | 9876325418 |
++---------+------------+------------+--------------+--------------+------+------------+
+2 rows in set (0.00 sec)
+
+
+2) Display all distinct cities where Customers reside.
+
+mysql> select distinct city from customers;
++-----------+
+| city      |
++-----------+
+| Pune      |
+| Mumbai    |
+| Bangalore |
+| Mysore    |
++-----------+
+4 rows in set (0.00 sec)
+
+
+3) Increase the price of books which were published in 2015 by 5%.
+
+mysql> select * from book where pub_year = '2015';
++------+----------------------+------------+----------+-----------+--------------+
+| ISBN | title                | unit_price | pub_year | author_no | publisher_no |
++------+----------------------+------------+----------+-----------+--------------+
+| 8521 | The Tristan Betrayal |        350 | 2015     |         2 |            4 |
++------+----------------------+------------+----------+-----------+--------------+
+1 row in set (0.00 sec)
+
+mysql> update book set unit_price = unit_price + 0.05*unit_price where pub_year = '2015';
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from book where pub_year = '2015';
++------+----------------------+------------+----------+-----------+--------------+
+| ISBN | title                | unit_price | pub_year | author_no | publisher_no |
++------+----------------------+------------+----------+-----------+--------------+
+| 8521 | The Tristan Betrayal |        368 | 2015     |         2 |            4 |
++------+----------------------+------------+----------+-----------+--------------+
+1 row in set (0.00 sec)
+
+
+4) Delete Customer records of customers who reside in Mysore.
+
+mysql> select * from customers;
++---------+------------+-------------+------------------+---------------+-----------+------------+
+| cust_no | cust_fname | cust_lname  | cust_company     | cust_addr     | city      | cust_phone |
++---------+------------+-------------+------------------+---------------+-----------+------------+
+|       1 | Avani      | Vaidya      | Sungard          | Sahakar Nagar | Pune      | 9850718202 |
+|       2 | Anurag     | Gujarathi   | Oracle           | Sinhgad Road  | Pune      | 9422324985 |
+|       3 | Aditya     | Bendre      | Symantec         | Perugate      | Pune      | 7418529632 |
+|       4 | Apoorva    | Karambelkar | KPMG             | Sahakar Nagar | Mumbai    | 7418529634 |
+|       5 | Mukta      | Vaidya      | LnTInfotech      | Vashi         | Mumbai    | 9638527414 |
+|       6 | Rucha      | Nachnolkar  | Sun Microsystems | Bannerghatta  | Bangalore | 9875641256 |
+|       7 | Shreya     | Mehta       | Infosys          | Connought     | Delhi     | 8526439742 |
+|       8 | Poorva     | Kajale      | Icertis          | Ganesh Khind  | Pune      | 8562347915 |
+|       9 | Pallavi    | Joshi       | Barclays         | Kothrud       | Pune      | 9876325418 |
++---------+------------+-------------+------------------+---------------+-----------+------------+
+9 rows in set (0.00 sec)
+
+
+5) Display names of authors who reside in USA or England (UNION).
+
+mysql> select * from author where country = 'USA'
+    -> UNION
+    -> select * from author where country = 'England';
++-----------+----------------+---------+
+| author_no | author_name    | country |
++-----------+----------------+---------+
+|         2 | John Grisham   | USA     |
+|         3 | David Baldacci | USA     |
+|         1 | Jeffrey Archer | England |
+|         4 | RL Stine       | England |
+|         6 | Enid Blyton    | England |
++-----------+----------------+---------+
+5 rows in set (0.00 sec)
+
+
+6) Display publisher names of publishers who were established in 1925 or 2000 (IN).
+
+mysql> select * from publisher where year in (1925,2010);
++--------------+----------------+----------------+------+
+| publisher_no | publisher_name | publisher_addr | year |
++--------------+----------------+----------------+------+
+|            3 | Harper Collins | USA            | 2010 |
++--------------+----------------+----------------+------+
+1 row in set (0.00 sec)
+
+
+7) Display details of book which has the maximum unit price.
+
+mysql> select * from book where (unit_price >= all(select unit_price from book));
++------+-------------------+------------+----------+-----------+--------------+
+| ISBN | title             | unit_price | pub_year | author_no | publisher_no |
++------+-------------------+------------+----------+-----------+--------------+
+| 7415 | Last Man Standing |        600 | 2017     |         3 |            5 |
++------+-------------------+------------+----------+-----------+--------------+
+1 row in set (0.00 sec)
+
+mysql> select * from book where (unit_price = (select max(unit_price) from book));
++------+-------------------+------------+----------+-----------+--------------+
+| ISBN | title             | unit_price | pub_year | author_no | publisher_no |
++------+-------------------+------------+----------+-----------+--------------+
+| 7415 | Last Man Standing |        600 | 2017     |         3 |            5 |
++------+-------------------+------------+----------+-----------+--------------+
+1 row in set (0.00 sec)
+
+
+8) Display details of books whose unit price is between 300 and 400 (BETWEEN).
+
+mysql> select * from book where unit_price between 300 and 400;
++------+----------------------+------------+----------+-----------+--------------+
+| ISBN | title                | unit_price | pub_year | author_no | publisher_no |
++------+----------------------+------------+----------+-----------+--------------+
+| 8521 | The Tristan Betrayal |        368 | 2015     |         2 |            4 |
+| 9632 | The Alchemist        |        400 | 2014     |         5 |            2 |
+| 9634 | GooseBumps           |        400 | 2006     |         4 |            1 |
++------+----------------------+------------+----------+-----------+--------------+
+3 rows in set (0.00 sec)
+
+
+9) Display details of books in descending order according to published year.
+
+mysql> select * from book order by pub_year desc;
++------+----------------------+------------+----------+-----------+--------------+
+| ISBN | title                | unit_price | pub_year | author_no | publisher_no |
++------+----------------------+------------+----------+-----------+--------------+
+| 7415 | Last Man Standing    |        600 | 2017     |         3 |            5 |
+| 8521 | The Tristan Betrayal |        368 | 2015     |         2 |            4 |
+| 9632 | The Alchemist        |        400 | 2014     |         5 |            2 |
+| 1234 | Paths of Glory       |        550 | 2008     |         1 |            3 |
+| 9634 | GooseBumps           |        400 | 2006     |         4 |            1 |
+| 9517 | Famous Five          |        230 | 2000     |         6 |            4 |
++------+----------------------+------------+----------+-----------+--------------+
+6 rows in set (0.00 sec)
+
+
+10) Display details of books which were published in 2002 or 2005 or 2006.
+
+mysql> select * from book where pub_year in (2000,2006,2014);
++------+---------------+------------+----------+-----------+--------------+
+| ISBN | title         | unit_price | pub_year | author_no | publisher_no |
++------+---------------+------------+----------+-----------+--------------+
+| 9517 | Famous Five   |        230 | 2000     |         6 |            4 |
+| 9632 | The Alchemist |        400 | 2014     |         5 |            2 |
+| 9634 | GooseBumps    |        400 | 2006     |         4 |            1 |
++------+---------------+------------+----------+-----------+--------------+
+3 rows in set (0.00 sec)
+
+
+1) Find Customer details and order details using NATURAL JOIN.
+
+mysql> select * from customers natural join orders;
++---------+------------+-------------+--------------+---------------+--------+------------+----------+------+------+------------+
+| cust_no | cust_fname | cust_lname  | cust_company | cust_addr     | city   | cust_phone | order_no | ISBN | qty  | odate      |
++---------+------------+-------------+--------------+---------------+--------+------------+----------+------+------+------------+
+|       1 | Avani      | Vaidya      | Sungard      | Sahakar Nagar | Pune   | 9850718202 |        5 | 1234 |    2 | 2018-10-13 |
+|       1 | Avani      | Vaidya      | Sungard      | Sahakar Nagar | Pune   | 9850718202 |        9 | 1234 |    1 | 2018-09-08 |
+|       2 | Anurag     | Gujarathi   | Oracle       | Sinhgad Road  | Pune   | 9422324985 |        1 | 8521 |    2 | 2018-05-15 |
+|       4 | Apoorva    | Karambelkar | KPMG         | Sahakar Nagar | Mumbai | 7418529634 |        4 | 7415 |    1 | 2018-09-28 |
+|       5 | Mukta      | Vaidya      | LnTInfotech  | Vashi         | Mumbai | 9638527414 |        2 | 9632 |    3 | 2018-08-05 |
+|       5 | Mukta      | Vaidya      | LnTInfotech  | Vashi         | Mumbai | 9638527414 |        6 | 9517 |    4 | 2018-06-07 |
+|       7 | Shreya     | Mehta       | Infosys      | Connought     | Delhi  | 8526439742 |        3 | 1234 |    3 | 2018-07-04 |
+|       8 | Poorva     | Kajale      | Icertis      | Ganesh Khind  | Pune   | 8562347915 |        7 | 7415 |    2 | 2018-05-15 |
+|       9 | Pallavi    | Joshi       | Barclays     | Kothrud       | Pune   | 9876325418 |        8 | 9634 |    5 | 2018-08-06 |
++---------+------------+-------------+--------------+---------------+--------+------------+----------+------+------+------------+
+9 rows in set (0.01 sec)
+
+
+2) Find the book_ title, author_name, country.(INNER JOIN)
+
+mysql> select title as Book_Title,author_name as Author_Name,country as Country from book inner join author on book.author_no = author.author_no;
++----------------------+----------------+-----------+
+| Book_Title           | Author_Name    | Country   |
++----------------------+----------------+-----------+
+| Paths of Glory       | Jeffrey Archer | England   |
+| The Tristan Betrayal | John Grisham   | USA       |
+| Last Man Standing    | David Baldacci | USA       |
+| GooseBumps           | RL Stine       | England   |
+| The Alchemist        | Paulo Coelho   | Argentina |
+| Famous Five          | Enid Blyton    | England   |
++----------------------+----------------+-----------+
+6 rows in set (0.00 sec)
+
+
+3) Find the customer ID, name and order_no of customers who have never placed an order.
+(LEFT/RIGHT)
+
+mysql> select customers.cust_no as Customer_Id,cust_fname as First_Name,cust_lname as Last_Name,order_no as Order_No from customers left join orders on customers.cust_no = orders.cust_no where order_no is NULL;
++-------------+------------+------------+----------+
+| Customer_Id | First_Name | Last_Name  | Order_No |
++-------------+------------+------------+----------+
+|           3 | Aditya     | Bendre     |     NULL |
+|           6 | Rucha      | Nachnolkar |     NULL |
++-------------+------------+------------+----------+
+2 rows in set (0.00 sec)
+
+
+4) Find the Title, ISBN, order_no of the books for which order is not placed. (LEFT/RIGHT)
+
+mysql> select title as Book_Title,book.ISBN as ISBN,order_no as Order_No from book left join orders on book.ISBN = orders.ISBN where order_no is NULL;
+Empty set (0.00 sec)
+
+
+5) Display cust_fname, title,author_no,publisher_year where ISBN=1234. (JOINING more than 2 tables)
+
+mysql> select cust_fname,title,author_no,pub_year from customers natural join orders natural join book where ISBN = 1234;
++------------+----------------+-----------+----------+
+| cust_fname | title          | author_no | pub_year |
++------------+----------------+-----------+----------+
+| Shreya     | Paths of Glory |         1 | 2008     |
+| Avani      | Paths of Glory |         1 | 2008     |
+| Avani      | Paths of Glory |         1 | 2008     |
++------------+----------------+-----------+----------+
+3 rows in set (0.05 sec)
+
+
+6) Display the total number of books and customer name.(USE OF COUNT, ANY JOIN)
+
+mysql> select cust_fname,cust_lname,sum(qty) from customers tomers natural join orders group by cust_fname,cust_lname;
++------------+-------------+----------+
+| cust_fname | cust_lname  | sum(qty) |
++------------+-------------+----------+
+| Anurag     | Gujarathi   |        2 |
+| Apoorva    | Karambelkar |        1 |
+| Avani      | Vaidya      |        3 |
+| Mukta      | Vaidya      |        7 |
+| Pallavi    | Joshi       |        5 |
+| Poorva     | Kajale      |        2 |
+| Shreya     | Mehta       |        3 |
++------------+-------------+----------+
+7 rows in set (0.00 sec)
+
+
+7) List the cust_id, order_no and ISBN with books having title 'mysql'. (sub query- IN)
+
+mysql> select cust_no,order_no,ISBN from orders natural join book where title in (select title from book where title = 'Paths of Glory');
++---------+----------+------+
+| cust_no | order_no | ISBN |
++---------+----------+------+
+|       7 |        3 | 1234 |
+|       1 |        5 | 1234 |
+|       1 |        9 | 1234 |
++---------+----------+------+
+3 rows in set (0.00 sec)
+
+
+8) Find the names of all the companies that ordered books in the year 2015. (sub query, Between)
+
+mysql> select cust_company from customers natural join orders where odate in (select odate from orders where odate between '2018-01-01' and '2018-07-01');
++--------------+
+| cust_company |
++--------------+
+| Oracle       |
+| LnTInfotech  |
+| Icertis      |
++--------------+
+3 rows in set (0.01 sec)
+
+
+9) Create view showing the author and book details. (COMPLEX VIEW)
+
+mysql> select * from author_book;
++-----------+------+----------------------+------------+----------+--------------+----------------+-----------+
+| author_no | ISBN | title                | unit_price | pub_year | publisher_no | author_name    | country   |
++-----------+------+----------------------+------------+----------+--------------+----------------+-----------+
+|         1 | 1234 | Paths of Glory       |        550 | 2008     |            3 | Jeffrey Archer | England   |
+|         2 | 8521 | The Tristan Betrayal |        368 | 2015     |            4 | John Grisham   | USA       |
+|         3 | 7415 | Last Man Standing    |        600 | 2017     |            5 | David Baldacci | USA       |
+|         4 | 9634 | GooseBumps           |        400 | 2006     |            1 | RL Stine       | England   |
+|         5 | 9632 | The Alchemist        |        400 | 2014     |            2 | Paulo Coelho   | Argentina |
+|         6 | 9517 | Famous Five          |        230 | 2000     |            4 | Enid Blyton    | England   |
++-----------+------+----------------------+------------+----------+--------------+----------------+-----------+
+6 rows in set (0.00 sec)
+
+10) Perform Manipulation on simple view-Insert, update, delete, drop view.
+
+mysql> create or replace view simple_view as select cust_no,cust_fname,cust_lname,cust_company from customers;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into simple_view values(10,'Shalmalee','Shenolikar','Cummins');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from simple_view;
++---------+------------+-------------+------------------+
+| cust_no | cust_fname | cust_lname  | cust_company     |
++---------+------------+-------------+------------------+
+|       1 | Avani      | Vaidya      | Sungard          |
+|       2 | Anurag     | Gujarathi   | Oracle           |
+|       3 | Aditya     | Bendre      | Symantec         |
+|       4 | Apoorva    | Karambelkar | KPMG             |
+|       5 | Mukta      | Vaidya      | LnTInfotech      |
+|       6 | Rucha      | Nachnolkar  | Sun Microsystems |
+|       7 | Shreya     | Mehta       | Infosys          |
+|       8 | Poorva     | Kajale      | Icertis          |
+|       9 | Pallavi    | Joshi       | Barclays         |
+|      10 | Shalmalee  | Shenolikar  | Cummins          |
++---------+------------+-------------+------------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from customers;
++---------+------------+-------------+------------------+---------------+-----------+------------+
+| cust_no | cust_fname | cust_lname  | cust_company     | cust_addr     | city      | cust_phone |
++---------+------------+-------------+------------------+---------------+-----------+------------+
+|       1 | Avani      | Vaidya      | Sungard          | Sahakar Nagar | Pune      | 9850718202 |
+|       2 | Anurag     | Gujarathi   | Oracle           | Sinhgad Road  | Pune      | 9422324985 |
+|       3 | Aditya     | Bendre      | Symantec         | Perugate      | Pune      | 7418529632 |
+|       4 | Apoorva    | Karambelkar | KPMG             | Sahakar Nagar | Mumbai    | 7418529634 |
+|       5 | Mukta      | Vaidya      | LnTInfotech      | Vashi         | Mumbai    | 9638527414 |
+|       6 | Rucha      | Nachnolkar  | Sun Microsystems | Bannerghatta  | Bangalore | 9875641256 |
+|       7 | Shreya     | Mehta       | Infosys          | Connought     | Delhi     | 8526439742 |
+|       8 | Poorva     | Kajale      | Icertis          | Ganesh Khind  | Pune      | 8562347915 |
+|       9 | Pallavi    | Joshi       | Barclays         | Kothrud       | Pune      | 9876325418 |
+|      10 | Shalmalee  | Shenolikar  | Cummins          | NULL          | NULL      | NULL       |
++---------+------------+-------------+------------------+---------------+-----------+------------+
+10 rows in set (0.00 sec)
+
+mysql> update simple_view set cust_company = 'GD Apte' where cust_no = 8;
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customers;
++---------+------------+-------------+------------------+---------------+-----------+------------+
+| cust_no | cust_fname | cust_lname  | cust_company     | cust_addr     | city      | cust_phone |
++---------+------------+-------------+------------------+---------------+-----------+------------+
+|       1 | Avani      | Vaidya      | Sungard          | Sahakar Nagar | Pune      | 9850718202 |
+|       2 | Anurag     | Gujarathi   | Oracle           | Sinhgad Road  | Pune      | 9422324985 |
+|       3 | Aditya     | Bendre      | Symantec         | Perugate      | Pune      | 7418529632 |
+|       4 | Apoorva    | Karambelkar | KPMG             | Sahakar Nagar | Mumbai    | 7418529634 |
+|       5 | Mukta      | Vaidya      | LnTInfotech      | Vashi         | Mumbai    | 9638527414 |
+|       6 | Rucha      | Nachnolkar  | Sun Microsystems | Bannerghatta  | Bangalore | 9875641256 |
+|       7 | Shreya     | Mehta       | Infosys          | Connought     | Delhi     | 8526439742 |
+|       8 | Poorva     | Kajale      | GD Apte          | Ganesh Khind  | Pune      | 8562347915 |
+|       9 | Pallavi    | Joshi       | Barclays         | Kothrud       | Pune      | 9876325418 |
+|      10 | Shalmalee  | Shenolikar  | Cummins          | NULL          | NULL      | NULL       |
++---------+------------+-------------+------------------+---------------+-----------+------------+
+10 rows in set (0.00 sec)
+
+mysql> delete from simple_view where cust_no = 10;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from customers;
++---------+------------+-------------+------------------+---------------+-----------+------------+
+| cust_no | cust_fname | cust_lname  | cust_company     | cust_addr     | city      | cust_phone |
++---------+------------+-------------+------------------+---------------+-----------+------------+
+|       1 | Avani      | Vaidya      | Sungard          | Sahakar Nagar | Pune      | 9850718202 |
+|       2 | Anurag     | Gujarathi   | Oracle           | Sinhgad Road  | Pune      | 9422324985 |
+|       3 | Aditya     | Bendre      | Symantec         | Perugate      | Pune      | 7418529632 |
+|       4 | Apoorva    | Karambelkar | KPMG             | Sahakar Nagar | Mumbai    | 7418529634 |
+|       5 | Mukta      | Vaidya      | LnTInfotech      | Vashi         | Mumbai    | 9638527414 |
+|       6 | Rucha      | Nachnolkar  | Sun Microsystems | Bannerghatta  | Bangalore | 9875641256 |
+|       7 | Shreya     | Mehta       | Infosys          | Connought     | Delhi     | 8526439742 |
+|       8 | Poorva     | Kajale      | GD Apte          | Ganesh Khind  | Pune      | 8562347915 |
+|       9 | Pallavi    | Joshi       | Barclays         | Kothrud       | Pune      | 9876325418 |
++---------+------------+-------------+------------------+---------------+-----------+------------+
+9 rows in set (0.00 sec)
+
+mysql> drop view simple_view;
+Query OK, 0 rows affected (0.01 sec)
+
+Unnamed PL/SQL code block: Use of Control structure
+and Exception handling is mandatory.
+
+Write a PL/SQL block of code for the following
+requirements:-
+
+Schema:
+Customer(Cust_id,Name, DateofPayment, NameofScheme,
+Status)
+
+Fine(Cust_id, Date, Amt)
+
+1. Accept Cust_id & name of scheme from user.
+2. Check the number of days (from date of payment),
+if days are between 15 to 30 then fine amount will
+be Rs 5per day.
+3. If no. of days>30, per day fine will be Rs 50 per day
+& for days less than 30, Rs. 5 per day.
+4. After payment, status will change from N to P.
+5. If condition of fine is true, then details will be
+stored into Fine table.
+
+DECLARE
+	custid int;
+	days int;
+	pdate date;
+	st char(1);
+	f int;
+BEGIN
+	custid := &id;
+	select (sysdate - DateofPayment),DateofPayment,status into days,pdate,st from Customer where cust_id = custid;
+	if(days > 15 and days < 30 and st = 'n') then
+		f := days*5;
+	elsif(days > 30 and st = 'n') then
+		f := days*50;
+	else
+		f := 0;
+	end if;
+	if(f > 0) then
+		insert into Fine values(custid,pdate,f);
+		update Customer set status = 'p' where cust_id = custid;
+	end if;
+	EXCEPTION
+		when no_data_found then
+			dbms_output.put_line('Requested customer not present in database');
+END;
+
+Cursors: (All types: Implicit, Explicit, Cursor FOR
+Loop, Parameterized Cursor)
+Write a PL/SQL block of code using parameterized Cursor,
+that will merge the data available in the newly created table
+
+N_EmpId with the data available in the table O_EmpId.
+If the data in the first table already exist in the second table
+then that data should be skipped.
+
+DECLARE
+	CURSOR cur is select * from Employee;
+	crecord Employee%ROWTYPE;
+BEGIN
+	for crecord in cur
+	LOOP
+		if(crecord.status = 'pending') then
+			insert into pending_list values(crecord.emp_id,crecord.project);
+		elsif(crecord.status = 'completed') then
+			insert into incentive_list values(crecord.emp_id,crecord.project);
+		end if;
+	END LOOP;
+END;
+
+PL/SQL Stored Procedure and Stored Function.
+Write a Stored Procedure namely proc_Grade for the
+categorization of customer. If purchase by customer in year
+is <=20000 and >=10000 then customer will be placed in
+platinum category. If purchase by customer is between
+9999 and 5000 category is gold, if purchase between 4999
+and 2000 category is silver.
+Write a PL/SQL block for using procedure created with
+above requirement.
+Customer(Cust_id,name, total_purchase)
+Category(Cust_id,Name,Class)
+
+create or replace procedure proc_Grade
+is
+CURSOR cur is select * from customers;
+crecord customers%ROWTYPE;
+class varchar(20);
+BEGIN
+	FOR crecord in cur
+	LOOP
+		class := retclass(crecord.total_purchase);
+		insert into Category values(crecord.cust_id,crecord.name,class);
+	END LOOP;
+END;
+
+create or replace function retclass(tpurchase in integer)
+return varchar2
+is
+class varchar(20);
+BEGIN
+if(tpurchase > 10000 and tpurchase <= 20000) then
+	class := 'platinum';
+elsif(tpurchase > 5000 and tpurchase <= 10000) then
+	class := 'gold';
+elsif(tpurchase > 2000 and tpurchase <= 5000) then
+	class := 'silver';
+else
+	class := 'none';
+end if;
+return class;
+END;
+
+Database Trigger (All Types: Row level and Statement
+level triggers, Before and After Triggers).
+Write a database trigger on Student table. The System
+should keep track of the records that are being updated or
+deleted. The old value of updated or deleted records should
+be added in Alumni table.
+
+Student(Rollno,Name,DateofAdmission,branch,
+percent,Status)
+
+
+CREATE OR REPLACE TRIGGER deltrig BEFORE UPDATE OR DELETE ON Student
+FOR EACH ROW
+BEGIN
+	if(:old.status = 'notgraduated' and :new.status = 'graduated') then
+	insert into Alumni values(:old.name,:old.dateofadmission,:old.percent);
+	end if;
+END;
+
+CREATE OR REPLACE TRIGGER deltrig AFTER UPDATE OR DELETE ON Student
+FOR EACH ROW
+BEGIN
+	if(:old.status = 'notgraduated' and :new.status = 'graduated') then
+	insert into Alumni values(:old.name,:old.dateofadmission,:old.percent);
+	end if;
+END;
+
+CREATE OR REPLACE TRIGGER deltrig BEFORE UPDATE OR DELETE ON Student
+BEGIN
+	dbms_output.put_line('Trigger activated');
+END;
+
+
+CREATE OR REPLACE TRIGGER deltrig AFTER UPDATE OR DELETE ON Student
+BEGIN
+	dbms_output.put_line('Trigger activated');
+END;
+
+
+> db.createCollection("Employees");
+{ "ok" : 1 }
+
+> db.Employees.insertMany([{'empid':2,'name':'Anurag','company':'Morgan Stanley','Salary':80000,'designation':'Data Scientist'},{'empid':3,'name':'Abhijeet','company':'Tech Mahindra','Salary':70000,'designation':'Software Developer'}]);
+
+> db.Employees.find().pretty();
+{
+	"_id" : ObjectId("5bcb0822be460da57bcfb625"),
+	"empid" : 1,
+	"name" : "Avani",
+	"company" : "Maestrotech",
+	"Salary" : 50000
+}
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb626"),
+	"empid" : 2,
+	"name" : "Anurag",
+	"company" : "Morgan Stanley",
+	"Salary" : 80000,
+	"designation" : "Data Scientist"
+}
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb627"),
+	"empid" : 3,
+	"name" : "Abhijeet",
+	"company" : "Tech Mahindra",
+	"Salary" : 70000,
+	"designation" : "Software Developer"
+}
+{
+	"_id" : ObjectId("5bcb0c22be460da57bcfb628"),
+	"empid" : 5,
+	"name" : "Atharva",
+	"company" : "Infosys",
+	"Salary" : 40000,
+	"designation" : "Associate Developer"
+}
+{
+	"_id" : ObjectId("5bcb0c22be460da57bcfb629"),
+	"empid" : 4,
+	"name" : "Apoorva",
+	"company" : "KPMG",
+	"Salary" : 50000,
+	"designation" : "Chartered Accountant"
+}
+
+
+> db.Employees.find().sort({"Salary":-1}).pretty();
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb626"),
+	"empid" : 2,
+	"name" : "Anurag",
+	"company" : "Morgan Stanley",
+	"Salary" : 80000,
+	"designation" : "Data Scientist"
+}
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb627"),
+	"empid" : 3,
+	"name" : "Abhijeet",
+	"company" : "Tech Mahindra",
+	"Salary" : 70000,
+	"designation" : "Software Developer"
+}
+{
+	"_id" : ObjectId("5bcb0822be460da57bcfb625"),
+	"empid" : 1,
+	"name" : "Avani",
+	"company" : "Maestrotech",
+	"Salary" : 50000
+}
+{
+	"_id" : ObjectId("5bcb0c22be460da57bcfb629"),
+	"empid" : 4,
+	"name" : "Apoorva",
+	"company" : "KPMG",
+	"Salary" : 50000,
+	"designation" : "Chartered Accountant"
+}
+{
+	"_id" : ObjectId("5bcb0c22be460da57bcfb628"),
+	"empid" : 5,
+	"name" : "Atharva",
+	"company" : "Infosys",
+	"Salary" : 40000,
+	"designation" : "Associate Developer"
+}
+
+> db.Employees.update({empid:4},{$set:{"Salary":65000}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.Employees.find({"empid":4}).pretty()
+{
+	"_id" : ObjectId("5bcb0c22be460da57bcfb629"),
+	"empid" : 4,
+	"name" : "Apoorva",
+	"company" : "KPMG",
+	"Salary" : 65000,
+	"designation" : "Chartered Accountant"
+}
+
+> db.Employees.remove({"empid":5});
+WriteResult({ "nRemoved" : 1 })
+> db.Employees.find({"empid":5})
+
+> db.Employees.update({"name":"Anurag"},{"empid":2,"name":"Anurag","company":"Morgan Stanley","Salary":80000,"Experience":5,"designation":"Data Scientist"})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Employees.find({"name":"Anurag"}).pretty();
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb626"),
+	"empid" : 2,
+	"name" : "Anurag",
+	"company" : "Morgan Stanley",
+	"Salary" : 80000,
+	"Experience" : 5,
+	"designation" : "Data Scientist"
+}
+
+> db.Employees.find({$and:[{"Salary":{$gt:60000,$lte:80000}},{"Experience":{$gt:3,$lt:6}}]}).pretty();
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb626"),
+	"empid" : 2,
+	"name" : "Anurag",
+	"company" : "Morgan Stanley",
+	"Salary" : 80000,
+	"Experience" : 5,
+	"designation" : "Data Scientist"
+}
+
+> db.Employees.find({$or:[{"Salary":{$gt:60000,$lte:80000}},{"Experience":{$gt:3,$lt:6}}]}).pretty();
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb626"),
+	"empid" : 2,
+	"name" : "Anurag",
+	"company" : "Morgan Stanley",
+	"Salary" : 80000,
+	"Experience" : 5,
+	"designation" : "Data Scientist"
+}
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb627"),
+	"empid" : 3,
+	"name" : "Abhijeet",
+	"company" : "Tech Mahindra",
+	"Salary" : 70000,
+	"designation" : "Software Developer"
+}
+{
+	"_id" : ObjectId("5bcb0c22be460da57bcfb629"),
+	"empid" : 4,
+	"name" : "Apoorva",
+	"company" : "KPMG",
+	"Salary" : 65000,
+	"designation" : "Chartered Accountant"
+}
+
+> db.Employees.find({"Salary":{$lt:70000,$gt:50000}}).hint({"empid":1}).explain();
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "anurag.Employees",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"$and" : [
+				{
+					"Salary" : {
+						"$lt" : 70000
+					}
+				},
+				{
+					"Salary" : {
+						"$gt" : 50000
+					}
+				}
+			]
+		},
+		"winningPlan" : {
+			"stage" : "FETCH",
+			"filter" : {
+				"$and" : [
+					{
+						"Salary" : {
+							"$lt" : 70000
+						}
+					},
+					{
+						"Salary" : {
+							"$gt" : 50000
+						}
+					}
+				]
+			},
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"keyPattern" : {
+					"empid" : 1
+				},
+				"indexName" : "empid_1",
+				"isMultiKey" : false,
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 1,
+				"direction" : "forward",
+				"indexBounds" : {
+					"empid" : [
+						"[MinKey, MaxKey]"
+					]
+				}
+			}
+		},
+		"rejectedPlans" : [ ]
+	},
+	"serverInfo" : {
+		"host" : "dell-Inspiron-15-3567",
+		"port" : 27017,
+		"version" : "3.2.21",
+		"gitVersion" : "1ab1010737145ba3761318508ff65ba74dfe8155"
+	},
+	"ok" : 1
+}
+
+> db.Employees.find({"Salary":{$lt:90000,$gt:50000}}).hint({"empid":1}).pretty();
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb626"),
+	"empid" : 2,
+	"name" : "Anurag",
+	"company" : "Morgan Stanley",
+	"Salary" : 80000,
+	"Experience" : 5,
+	"designation" : "Data Scientist"
+}
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb627"),
+	"empid" : 3,
+	"name" : "Abhijeet",
+	"company" : "Tech Mahindra",
+	"Salary" : 70000,
+	"designation" : "Software Developer"
+}
+{
+	"_id" : ObjectId("5bcb0c22be460da57bcfb629"),
+	"empid" : 4,
+	"name" : "Apoorva",
+	"company" : "KPMG",
+	"Salary" : 65000,
+	"designation" : "Chartered Accountant"
+}
+
+> db.Employees.update({"Salary":{$lt:100000,$gte:80000}},{$set:{"Grade":"O+"}},{"multi":true});
+WriteResult({ "nMatched" : 2, "nUpserted" : 0, "nModified" : 1 })
+
+> db.Employees.update({"Salary":{$lt:100000,$gt:80000}},{$set:{"Grade":"O+"}},{"multi":true});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.Employees.update({"Salary":{$lte:50000,$gte:30000}},{$set:{"Grade":"A"}},{"multi":true});
+WriteResult({ "nMatched" : 2, "nUpserted" : 0, "nModified" : 2 })
+> db.Employees.find().pretty();
+{
+	"_id" : ObjectId("5bcb0822be460da57bcfb625"),
+	"empid" : 1,
+	"name" : "Avani",
+	"company" : "Indus Biotech",
+	"Salary" : 50000,
+	"designation" : "Biotech Analyst",
+	"Experience" : 4,
+	"Grade" : "A"
+}
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb626"),
+	"empid" : 2,
+	"name" : "Anurag",
+	"company" : "Morgan Stanley",
+	"Salary" : 80000,
+	"Experience" : 5,
+	"designation" : "Data Scientist",
+	"Grade" : "O+"
+}
+{
+	"_id" : ObjectId("5bcb0adbbe460da57bcfb627"),
+	"empid" : 3,
+	"name" : "Abhijeet",
+	"company" : "Barclays",
+	"Salary" : 90000,
+	"designation" : "Data Scientist",
+	"Experience" : 10,
+	"Grade" : "O+"
+}
+{
+	"_id" : ObjectId("5bcb0c22be460da57bcfb629"),
+	"empid" : 4,
+	"name" : "Apoorva",
+	"company" : "KPMG",
+	"Salary" : 65000,
+	"designation" : "Chartered Accountant",
+	"Experience" : 3,
+	"Grade" : "O"
+}
+{
+	"_id" : ObjectId("5bcb43f3771cd1c7de3f5183"),
+	"empid" : 5,
+	"name" : "Prajakta",
+	"company" : "Bosch",
+	"Salary" : 35000,
+	"designation" : "Design Tester",
+	"Experience" : 2,
+	"Grade" : "A"
+}
+
+> db.Student.insertMany([{"Rno":1,"Standard":10,"Division":"A","Marks":[90,85,95,86,93]},{"Rno":2,"Standard":11,"Division":"B","Marks":[84,83,87,79,86]},{"Rno":3,"Standard":10,"Division":"C","Marks":[51,45,62,58,69]}]);
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("5bcb4965f07999063b55dc4c"),
+		ObjectId("5bcb4965f07999063b55dc4d"),
+		ObjectId("5bcb4965f07999063b55dc4e")
+	]
+}
+
+> db.Student.insertMany([{"Rno":6,"Standard":12,"Division":"B","Marks":[85,83,79,86,89]},{"Rno":5,"Standard":12,"Division":"A","Marks":[71,76,74,76,71]},{"Rno":4,"Standard":11,"Division":"B","Marks":[79,78,75,80,84]}]);
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("5bcb4a0ef07999063b55dc4f"),
+		ObjectId("5bcb4a0ef07999063b55dc50"),
+		ObjectId("5bcb4a0ef07999063b55dc51")
+	]
+}
+
+> db.Student.find().pretty();
+{
+	"_id" : ObjectId("5bcb4965f07999063b55dc4c"),
+	"Rno" : 1,
+	"Standard" : 10,
+	"Division" : "A",
+	"Marks" : [
+		90,
+		85,
+		95,
+		86,
+		93
+	]
+}
+{
+	"_id" : ObjectId("5bcb4965f07999063b55dc4d"),
+	"Rno" : 2,
+	"Standard" : 11,
+	"Division" : "B",
+	"Marks" : [
+		84,
+		83,
+		87,
+		79,
+		86
+	]
+}
+{
+	"_id" : ObjectId("5bcb4965f07999063b55dc4e"),
+	"Rno" : 3,
+	"Standard" : 10,
+	"Division" : "C",
+	"Marks" : [
+		51,
+		45,
+		62,
+		58,
+		69
+	]
+}
+{
+	"_id" : ObjectId("5bcb4a0ef07999063b55dc4f"),
+	"Rno" : 6,
+	"Standard" : 12,
+	"Division" : "B",
+	"Marks" : [
+		85,
+		83,
+		79,
+		86,
+		89
+	]
+}
+{
+	"_id" : ObjectId("5bcb4a0ef07999063b55dc50"),
+	"Rno" : 5,
+	"Standard" : 12,
+	"Division" : "A",
+	"Marks" : [
+		71,
+		76,
+		74,
+		76,
+		71
+	]
+}
+{
+	"_id" : ObjectId("5bcb4a0ef07999063b55dc51"),
+	"Rno" : 4,
+	"Standard" : 11,
+	"Division" : "B",
+	"Marks" : [
+		79,
+		78,
+		75,
+		80,
+		84
+	]
+}
+
+> db.Student.find({"Marks":{$elemMatch:{$gt:60,$lt:70}}}).pretty()
+{
+	"_id" : ObjectId("5bcb4965f07999063b55dc4e"),
+	"Rno" : 3,
+	"Standard" : 10,
+	"Division" : "C",
+	"Marks" : [
+		51,
+		45,
+		62,
+		58,
+		69
+	]
+}
+> db.Student.find({"Marks":{$elemMatch:{$gt:80,$lt:90}}}).pretty()
+{
+	"_id" : ObjectId("5bcb4965f07999063b55dc4c"),
+	"Rno" : 1,
+	"Standard" : 10,
+	"Division" : "A",
+	"Marks" : [
+		90,
+		85,
+		95,
+		86,
+		93
+	]
+}
+{
+	"_id" : ObjectId("5bcb4965f07999063b55dc4d"),
+	"Rno" : 2,
+	"Standard" : 11,
+	"Division" : "B",
+	"Marks" : [
+		84,
+		83,
+		87,
+		79,
+		86
+	]
+}
+{
+	"_id" : ObjectId("5bcb4a0ef07999063b55dc4f"),
+	"Rno" : 6,
+	"Standard" : 12,
+	"Division" : "B",
+	"Marks" : [
+		85,
+		83,
+		79,
+		86,
+		89
+	]
+}
+{
+	"_id" : ObjectId("5bcb4a0ef07999063b55dc51"),
+	"Rno" : 4,
+	"Standard" : 11,
+	"Division" : "B",
+	"Marks" : [
+		79,
+		78,
+		75,
+		80,
+		84
+	]
+}
+
+> db.Student.find({"Marks.0":{$lt:80}}).pretty()
+{
+	"_id" : ObjectId("5bcb4965f07999063b55dc4e"),
+	"Rno" : 3,
+	"Standard" : 10,
+	"Division" : "C",
+	"Marks" : [
+		51,
+		45,
+		62,
+		58,
+		69
+	]
+}
+{
+	"_id" : ObjectId("5bcb4a0ef07999063b55dc50"),
+	"Rno" : 5,
+	"Standard" : 12,
+	"Division" : "A",
+	"Marks" : [
+		71,
+		76,
+		74,
+		76,
+		71
+	]
+}
+{
+	"_id" : ObjectId("5bcb4a0ef07999063b55dc51"),
+	"Rno" : 4,
+	"Standard" : 11,
+	"Division" : "B",
+	"Marks" : [
+		79,
+		78,
+		75,
+		80,
+		84
+	]
+}
+
+> db.Student.update({"Rno":4},{$pop:{"Marks":1}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.Student.find({"Rno":4}).pretty()
+{
+	"_id" : ObjectId("5bcb4a0ef07999063b55dc51"),
+	"Rno" : 4,
+	"Standard" : 11,
+	"Division" : "B",
+	"Marks" : [
+		79,
+		78,
+		75,
+		80
+	]z
+}
+
+> db.Student.update({"Rno":4},{$addToSet:{"Marks":86}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Student.find({"Rno":4}).pretty()
+{
+	"_id" : ObjectId("5bcb4a0ef07999063b55dc51"),
+	"Rno" : 4,
+	"Standard" : 11,
+	"Division" : "B",
+	"Marks" : [
+		79,
+		78,
+		75,
+		80,
+		86
+	]
+}
+
+> db.Student.update({"Rno":4},{$set:{"Marks.0":85}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Student.find({"Rno":4}).pretty()
+{
+	"_id" : ObjectId("5bcb4a0ef07999063b55dc51"),
+	"Rno" : 4,
+	"Standard" : 11,
+	"Division" : "B",
+	"Marks" : [
+		85,
+		78,
+		75,
+		80,
+		86
+	]
+}
+
+> db.Student.update({"Rno":2},{$set:{"Marks.2":87}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Student.find({"Rno":2}).pretty()
+{
+	"_id" : ObjectId("5bcb4965f07999063b55dc4d"),
+	"Rno" : 2,
+	"Standard" : 11,
+	"Division" : "B",
+	"Marks" : [
+		84,
+		83,
+		87,
+		79,
+		86
+	]
+}
+
+> db.Customers.insertMany([{"Custid":1,"Name":"Avani","Purchase":5000,"Date":"12-10-18"},{"Custid":2,"Name":"Anurag","Purchase":6000,"Date":"20-10-18"},{"Custid":3,"Name":"Abhijeet","Purchase":4000,"Date":"10-10-18"},{"Custid":1,"Name":"Avani","Purchase":3000,"Date":"18-10-18"},{"Custid":5,"Name":"Laxmi","Purchase":2500,"Date":"10-10-18"},{"Custid":4,"Name":"Haresh","Purchase":2900,"Date":"10-10-18"}]);
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("5bcc1696d48202a7d819bd92"),
+		ObjectId("5bcc1696d48202a7d819bd93"),
+		ObjectId("5bcc1696d48202a7d819bd94"),
+		ObjectId("5bcc1696d48202a7d819bd95"),
+		ObjectId("5bcc1696d48202a7d819bd96"),
+		ObjectId("5bcc1696d48202a7d819bd97")
+	]
+}
+
+> db.Customers.insertMany([{"Custid":1,"Name":"Avani","Purchase":4830,"Date":"20-10-18"},{"Custid":2,"Name":"Anurag","Purchase":5930,"Date":"12-10-18"},{"Custid":3,"Name":"Abhijeet","Purchase":2560,"Date":"20-10-18"},{"Custid":1,"Name":"Avani","Purchase":4800,"Date":"12-10-18"},{"Custid":5,"Name":"Laxmi","Purchase":2600,"Date":"18-10-18"},{"Custid":4,"Name":"Haresh","Purchase":3400,"Date":"12-10-18"}]);
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("5bcc189cd48202a7d819bd98"),
+		ObjectId("5bcc189cd48202a7d819bd99"),
+		ObjectId("5bcc189cd48202a7d819bd9a"),
+		ObjectId("5bcc189cd48202a7d819bd9b"),
+		ObjectId("5bcc189cd48202a7d819bd9c"),
+		ObjectId("5bcc189cd48202a7d819bd9d")
+	]
+}
+
+> db.Customers.aggregate({$group:{_id:"$Custid","Total":{$sum:"$Purchase"}}})
+{ "_id" : 3, "Total" : 6560 }
+{ "_id" : 2, "Total" : 11930 }
+{ "_id" : 4, "Total" : 6300 }
+{ "_id" : 5, "Total" : 5100 }
+{ "_id" : 1, "Total" : 17630 }
+
+> db.Customers.aggregate({$group:{_id:"$Date","Daily inward":{$sum:"$Purchase"}}})
+{ "_id" : "18-10-18", "Daily inward" : 5600 }
+{ "_id" : "10-10-18", "Daily inward" : 9400 }
+{ "_id" : "20-10-18", "Daily inward" : 13390 }
+{ "_id" : "12-10-18", "Daily inward" : 19130 }
+
+
+> db.Movie.find().pretty()
+{
+	"_id" : ObjectId("5bbd75ac242a5b52d4591e2b"),
+	"Name" : "abc",
+	"Occupation" : "Teacher",
+	"movies" : [
+		{
+			"id" : 12,
+			"rating" : 4,
+			"duration" : 98
+		},
+		{
+			"id" : 10,
+			"rating" : 5,
+			"duration" : 76
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bbd75d9242a5b52d4591e2c"),
+	"Name" : "xyz",
+	"Occupation" : "Doctor",
+	"movies" : [
+		{
+			"id" : 15,
+			"rating" : 4,
+			"duration" : 112
+		},
+		{
+			"id" : 5,
+			"rating" : 3,
+			"duration" : 95
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bbd7634242a5b52d4591e2d"),
+	"Name" : "pqr",
+	"Occupation" : "Lawyer",
+	"movies" : [
+		{
+			"id" : 11,
+			"rating" : 3,
+			"duration" : 106
+		},
+		{
+			"id" : 4,
+			"rating" : 3,
+			"duration" : 93
+		},
+		{
+			"id" : 2,
+			"rating" : 4,
+			"duration" : 113
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bbd7650242a5b52d4591e2e"),
+	"Name" : "pqr",
+	"Occupation" : "Lawyer",
+	"movies" : [
+		{
+			"id" : 12,
+			"rating" : 4,
+			"duration" : 98
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bbd7687242a5b52d4591e2f"),
+	"Name" : "mno",
+	"Occupation" : "Consultant",
+	"movies" : [
+		{
+			"id" : 15,
+			"rating" : 4,
+			"duration" : 112
+		}
+	]
+}
+
+> db.Movie.aggregate({$unwind:"$movies"}).pretty()
+{
+	"_id" : ObjectId("5bbd75ac242a5b52d4591e2b"),
+	"Name" : "abc",
+	"Occupation" : "Teacher",
+	"movies" : {
+		"id" : 12,
+		"rating" : 4,
+		"duration" : 98
+	}
+}
+{
+	"_id" : ObjectId("5bbd75ac242a5b52d4591e2b"),
+	"Name" : "abc",
+	"Occupation" : "Teacher",
+	"movies" : {
+		"id" : 10,
+		"rating" : 5,
+		"duration" : 76
+	}
+}
+{
+	"_id" : ObjectId("5bbd75d9242a5b52d4591e2c"),
+	"Name" : "xyz",
+	"Occupation" : "Doctor",
+	"movies" : {
+		"id" : 15,
+		"rating" : 4,
+		"duration" : 112
+	}
+}
+{
+	"_id" : ObjectId("5bbd75d9242a5b52d4591e2c"),
+	"Name" : "xyz",
+	"Occupation" : "Doctor",
+	"movies" : {
+		"id" : 5,
+		"rating" : 3,
+		"duration" : 95
+	}
+}
+{
+	"_id" : ObjectId("5bbd7634242a5b52d4591e2d"),
+	"Name" : "pqr",
+	"Occupation" : "Lawyer",
+	"movies" : {
+		"id" : 11,
+		"rating" : 3,
+		"duration" : 106
+	}
+}
+{
+	"_id" : ObjectId("5bbd7634242a5b52d4591e2d"),
+	"Name" : "pqr",
+	"Occupation" : "Lawyer",
+	"movies" : {
+		"id" : 4,
+		"rating" : 3,
+		"duration" : 93
+	}
+}
+{
+	"_id" : ObjectId("5bbd7634242a5b52d4591e2d"),
+	"Name" : "pqr",
+	"Occupation" : "Lawyer",
+	"movies" : {
+		"id" : 2,
+		"rating" : 4,
+		"duration" : 113
+	}
+}
+{
+	"_id" : ObjectId("5bbd7650242a5b52d4591e2e"),
+	"Name" : "pqr",
+	"Occupation" : "Lawyer",
+	"movies" : {
+		"id" : 12,
+		"rating" : 4,
+		"duration" : 98
+	}
+}
+{
+	"_id" : ObjectId("5bbd7687242a5b52d4591e2f"),
+	"Name" : "mno",
+	"Occupation" : "Consultant",
+	"movies" : {
+		"id" : 15,
+		"rating" : 4,
+		"duration" : 112
+	}
+}
+
+> db.Inventory.insertMany([{"item":"bearing",instock:[{"warehouse":"A","qty":20}]},{"item":"splindle",instock:[{"warehouse":"A","qty":62},{"warehouse":"B","qty":71}]},{"item":"sprocket","instock":[{"warehouse":"C","qty":56},{"warehouse":"A","qty":46}]},{"item":"gear","instock":[{"warehouse":"B","qty":24},{"warehouse":"C","qty":18}]}])
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("5bcc1ee9d48202a7d819bd9e"),
+		ObjectId("5bcc1ee9d48202a7d819bd9f"),
+		ObjectId("5bcc1ee9d48202a7d819bda0"),
+		ObjectId("5bcc1ee9d48202a7d819bda1")
+	]
+}
+
+> db.Inventory.insertMany([{"item":"wiper",instock:[{"warehouse":"A","qty":30}]},{"item":"valve",instock:[{"warehouse":"A","qty":54},{"warehouse":"B","qty":67}]},{"item":"relay","instock":[{"warehouse":"A","qty":54},{"warehouse":"B","qty":42}]},{"item":"flywheel","instock":[{"warehouse":"A","qty":36},{"warehouse":"B","qty":24}]}])
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("5bcc1fc4d48202a7d819bda2"),
+		ObjectId("5bcc1fc4d48202a7d819bda3"),
+		ObjectId("5bcc1fc4d48202a7d819bda4"),
+		ObjectId("5bcc1fc4d48202a7d819bda5")
+	]
+}
+
+> db.Inventory.find().pretty()
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9e"),
+	"item" : "bearing",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 20
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9f"),
+	"item" : "splindle",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 62
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 71
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bda0"),
+	"item" : "sprocket",
+	"instock" : [
+		{
+			"warehouse" : "C",
+			"qty" : 56
+		},
+		{
+			"warehouse" : "A",
+			"qty" : 46
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bda1"),
+	"item" : "gear",
+	"instock" : [
+		{
+			"warehouse" : "B",
+			"qty" : 24
+		},
+		{
+			"warehouse" : "C",
+			"qty" : 18
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda2"),
+	"item" : "wiper",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 30
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda3"),
+	"item" : "valve",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 67
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda4"),
+	"item" : "relay",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 42
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda5"),
+	"item" : "flywheel",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 36
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 24
+		}
+	]
+}
+> db.Inventory.find({"instock.warehouse":"A"}).pretty();
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9e"),
+	"item" : "bearing",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 20
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9f"),
+	"item" : "splindle",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 62
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 71
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bda0"),
+	"item" : "sprocket",
+	"instock" : [
+		{
+			"warehouse" : "C",
+			"qty" : 56
+		},
+		{
+			"warehouse" : "A",
+			"qty" : 46
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda2"),
+	"item" : "wiper",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 30
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda3"),
+	"item" : "valve",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 67
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda4"),
+	"item" : "relay",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 42
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda5"),
+	"item" : "flywheel",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 36
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 24
+		}
+	]
+}
+> db.Inventory.find({"instock":{"warehouse":"A","qty":54}}).pretty();
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda3"),
+	"item" : "valve",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 67
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda4"),
+	"item" : "relay",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 42
+		}
+	]
+}
+
+> db.Inventory.find({"instock.qty":{$gte:30,$lt:50}}).pretty()
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bda0"),
+	"item" : "sprocket",
+	"instock" : [
+		{
+			"warehouse" : "C",
+			"qty" : 56
+		},
+		{
+			"warehouse" : "A",
+			"qty" : 46
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda2"),
+	"item" : "wiper",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 30
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda4"),
+	"item" : "relay",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 42
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda5"),
+	"item" : "flywheel",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 36
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 24
+		}
+	]
+}
+
+> db.Inventory.find({$and:[{"instock.0.qty":{$gte:30,$lt:50}},{"instock.0.warehouse":"A"}]}).pretty()
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda2"),
+	"item" : "wiper",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 30
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda5"),
+	"item" : "flywheel",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 36
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 24
+		}
+	]
+}
+
+> db.Inventory.find({$and:[{"item":"valve"},{"instock.0.warehouse":"A"}]}).pretty()
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda3"),
+	"item" : "valve",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 67
+		}
+	]
+}
+> db.Inventory.find({$or:[{"item":"valve"},{"instock.0.warehouse":"A"}]}).pretty()
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9e"),
+	"item" : "bearing",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 20
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9f"),
+	"item" : "splindle",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 62
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 71
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda2"),
+	"item" : "wiper",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 30
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda3"),
+	"item" : "valve",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 67
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda4"),
+	"item" : "relay",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 42
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda5"),
+	"item" : "flywheel",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 36
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 24
+		}
+	]
+}
+
+> db.Inventory.find().sort({"instock.0.qty":-1}).pretty();
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9f"),
+	"item" : "splindle",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 62
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 71
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bda0"),
+	"item" : "sprocket",
+	"instock" : [
+		{
+			"warehouse" : "C",
+			"qty" : 56
+		},
+		{
+			"warehouse" : "A",
+			"qty" : 46
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda3"),
+	"item" : "valve",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 67
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda4"),
+	"item" : "relay",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 54
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 42
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda5"),
+	"item" : "flywheel",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 36
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 24
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda2"),
+	"item" : "wiper",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 30
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bda1"),
+	"item" : "gear",
+	"instock" : [
+		{
+			"warehouse" : "B",
+			"qty" : 24
+		},
+		{
+			"warehouse" : "C",
+			"qty" : 18
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9e"),
+	"item" : "bearing",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 20
+		}
+	]
+}
+
+
+> db.Inventory.update({"item":"wiper"},{$push:{"instock":{"warehouse":"C","qty":25}}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.Inventory.find({"item":"wiper"}).pretty()
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda2"),
+	"item" : "wiper",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 30
+		},
+		{
+			"warehouse" : "C",
+			"qty" : 25
+		}
+	]
+}
+
+> db.Inventory.find({"item":"bearing"}).pretty()
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9e"),
+	"item" : "bearing",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 20
+		}
+	]
+}
+
+> db.Inventory.update({"item":"bearing"},{$addToSet:{"instock":{"warehouse":"A","qty":20}}})
+
+> db.Inventory.update({"item":"bearing"},{$addToSet:{"instock":{"warehouse":"B","qty":25}}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Inventory.find({"item":"bearing"}).pretty()
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9e"),
+	"item" : "bearing",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 20
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 25
+		}
+	]
+}
+
+> db.Inventory.find().sort({"instock.0.qty":1}).limit(3).pretty()
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bd9e"),
+	"item" : "bearing",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 20
+		},
+		{
+			"warehouse" : "B",
+			"qty" : 25
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1ee9d48202a7d819bda1"),
+	"item" : "gear",
+	"instock" : [
+		{
+			"warehouse" : "B",
+			"qty" : 24
+		},
+		{
+			"warehouse" : "C",
+			"qty" : 18
+		}
+	]
+}
+{
+	"_id" : ObjectId("5bcc1fc4d48202a7d819bda2"),
+	"item" : "wiper",
+	"instock" : [
+		{
+			"warehouse" : "A",
+			"qty" : 30
+		},
+		{
+			"warehouse" : "C",
+			"qty" : 25
+		}
+	]
+}
+
+> db.Inventory.find({"item":"bearing"}).hint({"item":1}).explain()
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "anurag.Inventory",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"item" : {
+				"$eq" : "bearing"
+			}
+		},
+		"winningPlan" : {
+			"stage" : "FETCH",
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"keyPattern" : {
+					"item" : 1
+				},
+				"indexName" : "item_1",
+				"isMultiKey" : false,
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 1,
+				"direction" : "forward",
+				"indexBounds" : {
+					"item" : [
+						"[\"bearing\", \"bearing\"]"
+					]
+				}
+			}
+		},
+		"rejectedPlans" : [ ]
+	},
+	"serverInfo" : {
+		"host" : "dell-Inspiron-15-3567",
+		"port" : 27017,
+		"version" : "3.2.21",
+		"gitVersion" : "1ab1010737145ba3761318508ff65ba74dfe8155"
+	},
+	"ok" : 1
+}
+
+
+create or replace function myfunc(a in integer,b in integer)
+return int
+is
+addition int;
+BEGIN
+	addition := a+b;
+	return addition;
+END;
+
+create or replace function myfunc(a in integer,b in integer,add out integer)
+return int
+is
+addition int;
+BEGIN
+	addition := a+b;
+	add := addition;
+	return addition;
+END;
+
+
+DECLARE 
+add int;
+s int;
+BEGIN
+s := myfunc(3,5,add);
+dbms_output.put_line('Addition is ' || add);
+dbms_output.put_line('Addition is ' || s);
+END;
+/
+
+
+CREATE OR REPLACE PROCEDURE myproc(a in int,b in int, s out int)
+IS
+BEGIN
+s:=a+b;
+END;
+/
+
+DECLARE
+s int;
+BEGIN
+myproc(4,5,s);
+dbms_output.put_line('The addition is ' || s);
+END;
+/
+
+DECLARE
+CURSOR cur(empid int) is select * from Employee where emp_id = empid;
+erecord Employee%ROWTYPE;
+empid int;
+BEGIN
+	empid := &id;
+	open cur(empid);
+	fetch cur into erecord;
+	if(erecord.status = 'pending') then
+		insert into pending_list values(empid,erecord.project);
+	end if;
+	close cur;
+END;
+
+CREATE OR REPLACE PROCEDURE proc 
+IS
+CURSOR cur is select * from Employee;
+emprec Employee%ROWTYPE;
+BEGIN
+	FOR emprec in cur
+	LOOP
+		if(emprec.status = 'pending') then
+			insert into pending_list values(emprec.emp_id,emprec.project);
+		elsif(emprec.status = 'completed') then
+			insert into incentive_list values(emprec.emp_id,emprec.project);
+		end if;
+		exit when cur%NOTFOUND;
+	END LOOP;
+END;
+
+DECLARE
+pdate date;
+days int;
+f int;
+cid int;
+invalid EXCEPTION;
+name varchar(10);
+BEGIN
+	cid := &id;
+	if cid <= 0 then
+		raise invalid;
+	end if;
+	name := '&name';
+	select (sysdate-dateofpayment),dateofpayment into days,pdate from Customer where cust_id = cid;
+	if(days > 15 and days <= 30) then
+		f := days*5;
+	elsif(days > 30) then
+		f := days*50;
+	else
+		f := 0;
+	end if;
+	if(days > 0) then
+		insert into Fine values(cid,pdate,f);
+	end if;
+	EXCEPTION
+		when invalid then
+			dbms_output.put_line('Entered cust id is invalid');
+		when no_data_found then
+			dbms_output.put_line('Requested customer not found');
+END;
+
+
+CREATE OR REPLACE PROCEDURE proc
+IS
+CURSOR cur is select * from customers;
+class varchar(10);
+crecord customers%ROWTYPE;
+BEGIN
+	for crecord in cur
+	LOOP
+		class := retclass(crecord.total_purchase);
+		insert into Category values(crecord.cust_id,crecord.name,class);
+		exit when cur%NOTFOUND;
+	END LOOP;
+END;
+
+CREATE OR REPLACE FUNCTION retclass(tpurchase in int)
+return varchar2
+IS
+class varchar(20);
+BEGIN
+	if(tpurchase > 10000 and tpurchase <= 15000) then
+		class := 'platinum';
+	elsif(tpurchase > 5000 and tpurchase <= 10000) then
+		class := 'gold';
+	elsif(tpurchase > 2000 and tpurchase <= 5000) then
+		class := 'silver';
+	else
+		class := 'none';
+	end if;
+return class;
+END;
+
+
+BEGIN
+Insert into incentive_list
+Select emp_id,project from Employee where status = 'completed';
+if sql%notfound then
+dbms_output.put_line('No Entries Found');
+END IF;
+END;
+
+CREATE OR REPLACE TRIGGER trig BEFORE UPDATE OF status ON Student
+FOR EACH ROW
+BEGIN
+	if(:old.status = 'notgraduated' and :new.status = 'graduated') then
+		insert into Alumni values(:old.rollno,:old.name,:old.dateofadmission,:old.percent);
+	end if;
+	EXCEPTION
+		when DUP_VAL_ON_INDEX then
+			dbms_output.put_line('Entry already exists');
+END;
+
+
+CREATE OR REPLACE TRIGGER trig AFTER UPDATE OF status on Student
+FOR EACH ROW
+BEGIN
+	if(:old.status = 'notgraduated' and :new.status = 'graduated') then
+		insert into Alumni values(:old.Rollno,:old.name,:old.dateofadmission,:old.percent);
+	end if;
+	EXCEPTION
+		when DUP_VAL_ON_INDEX then
+			dbms_output.put_line('Entry already exists');
+END;
+
+CREATE OR REPLACE TRIGGER trig BEFORE DELETE on Student
+FOR EACH ROW
+BEGIN
+	insert into Alumni values(:old.rollno,:old.name,:old.dateofadmission,:old.percent);
+	EXCEPTION
+		when DUP_VAL_ON_INDEX then
+			dbms_output.put_line('Entry already exists');
+END;
+
+CREATE OR REPLACE TRIGGER trig AFTER DELETE on Student
+FOR EACH ROW
+BEGIN
+	insert into Alumni values(:old.rollno,:old.name,:old.dateofadmission,:old.percent);
+	EXCEPTION
+		when DUP_VAL_ON_INDEX then
+			dbms_output.put_line('Entry already exists');
+END;

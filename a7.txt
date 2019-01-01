@@ -1,0 +1,84 @@
+PL/SQL Stored Procedure and Stored Function.
+
+Write a Stored Procedure namely proc_Grade for the
+categorization of customer. If purchase by customer in year
+is <=20000 and >=10000 then customer will be placed in
+platinum category. If purchase by customer is between
+9999 and 5000 category is gold, if purchase between 4999
+and 2000 category is silver.
+
+Write a PL/SQL block for using procedure created with
+above requirement.
+Customer(Cust_id,name, total_purchase)
+Category(Cust_id,Name,Class)
+
+
+create table Customers(Cust_id integer primary key,name varchar(20),total_purchase float);
+
+create table Category(Cust_id,name varchar(20),Class varchar(20),foreign key(Cust_id) references Customers(Cust_id));
+
+
+insert into Customers values(1,'Anurag',15000);
+insert into Customers values(2,'Abhijeet',9000);
+insert into Customers values(3,'Apoorva',4000);
+insert into Customers values(4,'Avani',6000);
+insert into Customers values(5,'Prajakta',7500);
+insert into Customers values(6,'Laxmi',3000);
+insert into Customers values(7,'Haresh',1500);
+
+create or replace procedure proc_Grade
+IS
+class varchar(20);
+CURSOR cur is select * from Customers;
+crecord Customers%ROWTYPE;
+BEGIN
+for crecord in cur
+LOOP
+	class := retclass(crecord.total_purchase);
+	insert into Category values(crecord.Cust_id,crecord.name,class);
+END LOOP;
+END;
+
+create or replace function retclass(tpurchase in integer)
+RETURN varchar2
+IS
+class varchar(20);
+BEGIN
+if(tpurchase > 10000 and tpurchase <= 20000) then
+	class := 'Platinum';
+elsif(tpurchase > 5000 and tpurchase <= 10000) then
+	class := 'Gold';
+elsif(tpurchase > 2000 and tpurchase <= 5000) then
+	class := 'Silver';
+else
+	class := 'Nothing';
+end if;
+return class;
+END;
+
+
+SQL> select * from Category;
+
+   CUST_ID NAME 		CLASS
+---------- -------------------- --------------------
+	 1 Anurag		Platinum
+	 2 Abhijeet		Gold
+	 3 Apoorva		Silver
+	 4 Avani		Gold
+	 5 Prajakta		Gold
+	 6 Laxmi		Silver
+	 7 Haresh		Nothing
+	 
+SQL> select * from Customers;
+
+   CUST_ID NAME 		TOTAL_PURCHASE
+---------- -------------------- --------------
+	 1 Anurag			 15000
+	 2 Abhijeet			  9000
+	 3 Apoorva			  4000
+	 4 Avani			  6000
+	 5 Prajakta			  7500
+	 6 Laxmi			  3000
+	 7 Haresh			  1500
+
+

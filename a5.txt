@@ -1,0 +1,75 @@
+Unnamed PL/SQL code block: Use of Control structure
+and Exception handling is mandatory.
+Write a PL/SQL block of code for the following
+requirements:-
+Schema:
+Customer(Cust_id,Name, DateofPayment, NameofScheme,
+Status)
+Fine(Cust_id, Date, Amt)
+1. Accept Cust_id & name of scheme from user.
+2. Check the number of days (from date of payment),
+if days are between 15 to 30 then fine amount will
+be Rs 5per day.
+3. If no. of days>30, per day fine will be Rs 50 per day
+& for days less than 30, Rs. 5 per day.
+4. After payment, status will change from N to P.
+5. If condition of fine is true, then details will be
+stored into Fine table.
+
+
+create table Customer(Cust_id integer primary key,DateOfPayment date,NameOfScheme varchar(20),Status varchar(5));
+
+create table Fine(Cust_id integer,PDate date,Amt integer,foreign key(Cust_id) references Customer(Cust_id));
+
+insert into Customer values(1,'12-jun-2018','abc','p');
+insert into Customer values(2,'25-jul-2017','xyz','n');
+insert into Customer values(3,'30-aug-2018','pqr','n');
+insert into Customer values(4,'25-sep-2018','mno','p');
+insert into Customer values(5,'15-oct-2018','ref','n');
+insert into Customer values(6,'9-sep-2018','ghi','n');
+
+DECLARE
+	eid integer;
+	days integer;
+	pdate date;
+	st varchar(2);
+	f integer;
+BEGIN
+	eid := &id;
+	select (sysdate-DateOfPayment),DateOfPayment,Status into days,pdate,st from Customer where Cust_id = eid;
+	if(days > 15 and days < 30 and st = 'n') then
+		f := 5*days;
+	elsif(days > 30 and st = 'n') then
+		f := 50*days;
+	else
+		f := 0;
+	end if;
+	if(f > 0) then
+		insert into Fine values(eid,pdate,f);
+	end if;
+	dbms_output.put_line('Fine calculated is ' || f);
+	Exception
+		when no_data_found then
+			dbms_output.put_line('No data found');
+END;
+
+SQL> select * from Customer;
+
+   CUST_ID DATEOFPA NAMEOFSCHEME	 STATU
+---------- -------- -------------------- -----
+	 1 12-06-18 abc 		 p
+	 2 25-07-17 xyz 		 n
+	 3 30-08-18 pqr 		 n
+	 4 25-09-18 mno 		 p
+	 5 15-10-18 ref 		 n
+	 6 09-09-18 ghi 		 n
+
+
+SQL> select * from Fine;
+
+   CUST_ID PDATE	   AMT
+---------- -------- ----------
+	 6 09-09-18	  2000
+	 3 30-08-18	  2500
+	 2 25-07-17	 22550
+

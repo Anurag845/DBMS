@@ -1,0 +1,59 @@
+PL/SQL assgn 5
+
+Unnamed PL/SQL code block: Use of Control structure
+and Exception handling is mandatory.
+
+Write a PL/SQL block of code for the following
+requirements:-
+Schema:
+
+Customer(Cust_id,Name, DateofPayment, NameofScheme,Status)
+Fine(Cust_id, Date, Amt)
+
+1. Accept Cust_id & name of scheme from user.
+2. Check the number of days (from date of payment),
+if days are between 15 to 30 then fine amount will
+be Rs 5per day.
+3. If no. of days>30, per day fine will be Rs 50 per day
+& for days less than 30, Rs. 5 per day.
+4. After payment, status will change from N to P.
+5. If condition of fine is true, then details will be
+stored into Fine table.
+
+create table Customer(Cust_id integer,Name varchar(20),DateOfPayment date,NameOfScheme varchar(20),Status varchar(20));
+
+create table Fine(Cust_id integer,Pdate date,Amt integer);
+
+insert into Customer values(1,'Anurag','21-jul-2018','abc','p');
+insert into Customer values(2,'Avani','11-aug-2018','pqr','n');
+insert into Customer values(3,'Apoorva','26-jun-2018','def','p');
+insert into Customer values(4,'Prajakta','4-aug-2018','xyz','n');
+insert into Customer values(5,'Poorva','10-may-2018','mno','n');
+
+
+DECLARE
+	cid integer;
+	days integer;
+	fine integer;
+	st varchar(20);
+	dte date;
+BEGIN
+	cid := &id;
+	select (sysdate - dateofpayment), dateofpayment, status into days, dte, st from Customer where cust_id = cid;
+	if (days <= 30 and days >= 15 and st ='n') then
+		fine := 5*days;
+	elsif (days > 30 and st = 'n') then
+		fine := 50*days;
+	else
+		fine := 0;
+	end if;
+	if (fine > 0) then
+		insert into Fine values(cid,dte,fine);
+	end if;  
+dbms_output.put_line('Status is ' || st);	
+dbms_output.put_line('Fine calculated is ' || fine);
+EXCEPTION 
+    WHEN no_data_found THEN 
+    	dbms_output.put_line('No such customer!'); 
+END;
+/

@@ -1,0 +1,70 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.bson.Document;
+import org.json.simple.JSONObject;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoCredential; 
+import com.mongodb.MongoException;
+import com.mongodb.ServerAddress;
+   
+    public class MongoConnect {
+      
+         public static void main(String args[])
+            {  
+                JSONObject obj=new JSONObject();  
+                obj.put("name","Anurag");  
+                obj.put("age",new Integer(20));  
+                obj.put("salary",new Double(60000));  
+                System.out.print(obj);
+                Document doc = new Document(obj);
+              
+                  try
+                  {
+                      MongoCredential credential;
+                        credential = MongoCredential.createCredential("te3134","te3134db","te3134".toCharArray());
+                        MongoClient mongo = new MongoClient(Arrays.asList(new ServerAddress("10.10.10.227",27017)),credential,new MongoClientOptions.Builder().build());
+                       
+                       
+                        System.out.println("Connected to the database successfully");
+                   
+                        MongoDatabase database = mongo.getDatabase("te3134db");
+                        System.out.println("Credentials ::"+ credential);
+                     
+                        //database.createCollection("JsonIllustration");
+                        //System.out.println("Collection created successfully");
+                       
+                        MongoCollection<Document> collection = database.getCollection("JsonIllustration");
+             
+                        collection.insertOne(doc);
+                       
+                        ArrayList<Document> documents = (ArrayList<Document>) collection.find().into(
+                                new ArrayList<Document>());
+                 
+                        for(Document document : documents){
+                            System.out.println(document);
+                        }
+                       
+                       
+                       
+                     
+                        mongo.close();
+                    }
+                    catch(MongoException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+            }   
+   
+
+}
+
+

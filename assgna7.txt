@@ -1,0 +1,81 @@
+PL/SQL Stored Procedure and Stored Function.
+
+Write a Stored Procedure namely proc_Grade for the
+categorization of customer. If purchase by customer in year
+is <=20000 and >=10000 then customer will be placed in
+platinum category. If purchase by customer is between
+9999 and 5000 category is gold, if purchase between 4999
+and 2000 category is silver.
+Write a PL/SQL block for using procedure created with
+above requirement.
+create table 
+Customer(Cust_id,name, total_purchase)
+Category(Cust_id,Name,Class)
+
+create table Customers(Cust_id integer,name varchar(20),total_purchase integer);
+
+create table Category(Cust_id integer,Name varchar(20),Class varchar(20));
+
+
+insert into Customers values(1,'anurag',15000);
+insert into Customers values(2,'avani',8000);
+insert into Customers values(3,'apoorva',4000);
+insert into Customers values(4,'prajakta',2000);
+insert into Customers values(5,'poorva',12000);
+
+CREATE OR REPLACE FUNCTION retclass(tpurchase in integer)
+RETURN varchar2 is
+class varchar(15);
+BEGIN
+	if (tpurchase <= 20000 and tpurchase >= 10000) then
+		class := 'platinum';
+	elsif (tpurchase < 10000 and tpurchase >= 5000) then
+		class := 'gold';
+	elsif (tpurchase < 5000 and tpurchase >= 3000) then
+		class := 'silver';
+	end if;
+	return class;
+END;
+/	
+
+CREATE OR REPLACE PROCEDURE proc_Grade is
+cursor cur is select * from Customers;
+crecord Customers%RowType;
+class varchar(20);
+BEGIN
+	for crecord in cur
+	LOOP
+		class := retclass(crecord.total_purchase);
+		insert into Category values(crecord.cust_id,crecord.name,class);
+	END LOOP;
+END;
+/
+		
+		
+		
+SQL> select * from Customers;
+
+   CUST_ID NAME 		TOTAL_PURCHASE
+---------- -------------------- --------------
+	 1 anurag			 15000
+	 2 avani			  8000
+	 3 apoorva			  4000
+	 4 prajakta			  2000
+	 5 poorva			 12000
+
+
+SQL> exec proc_grade;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from category;
+
+   CUST_ID NAME 		CLASS
+---------- -------------------- --------------------
+	 1 anurag		platinum
+	 2 avani		gold
+	 3 apoorva		silver
+	 4 prajakta
+	 5 poorva		platinum
+
+

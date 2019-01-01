@@ -1,0 +1,58 @@
+Database Trigger (All Types: Row level and Statement
+level triggers, Before and After Triggers).
+
+Write a database trigger on Student table. The System
+should keep track of the records that are being updated or
+deleted. The old value of updated or deleted records should
+be added in Alumni table.
+
+Student(Rollno,Name,DateofAdmission,branch,
+percent,Status)
+
+create table student(rollno integer,name varchar(20),dateofadmission date,branch varchar(20),percent integer,status varchar(20));
+
+create table alumni(rollno integer,name varchar(20),dateofadmission date,branch varchar(20),percent integer,status varchar(20));
+
+insert into student values(1,'anurag','20-may-2000','pune',95,'graduated');
+insert into student values(2,'avani','20-apr-2000','pune',96,'notgraduated');
+insert into student values(3,'apoorva','15-dec-1999','pune',97,'graduated');
+insert into student values(4,'poorva','5-jun-2000','pune',94,'notgraduated');
+insert into student values(5,'prajakta','9-apr-2000','pune',93,'notgraduated');
+
+
+CREATE OR REPLACE TRIGGER deltrig BEFORE DELETE OR UPDATE ON student
+FOR EACH ROW
+BEGIN
+if (:old.status = 'notgraduated' and :new.status = 'graduated') then
+	insert into alumni values(:old.rollno,:old.Name,:old.DateofAdmission,:old.branch,
+:old.percent,:new.Status);
+end if;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER deltrig AFTER DELETE OR UPDATE ON student
+FOR EACH ROW
+BEGIN
+if (:old.status = 'notgraduated' and :new.status = 'graduated') then
+	insert into alumni values(:old.rollno,:select old.Name,:old.DateofAdmission,:old.branch,
+:old.percent,:new.Status);
+end if;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER deltrig BEFORE DELETE OR UPDATE ON student
+BEGIN
+	insert into alumni values('rollno','Name','DateofAdmission','branch',
+'percent','Status');
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER deltrig AFTER DELETE OR UPDATE ON student
+BEGIN
+	insert into alumni values('rollno','Name','DateofAdmission','branch',
+'percent','Status');
+END;
+/
